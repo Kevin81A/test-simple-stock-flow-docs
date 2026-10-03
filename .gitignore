@@ -1,0 +1,13 @@
+.env
+api/.env
+api/vendor/
+api/storage/*.key
+api/storage/logs/*.log
+api/bootstrap/cache/*.php
+app/node_modules/
+app/dist/
+tool/.venv/
+tool/__pycache__/
+tool/*.egg-info/
+.DS_Store
+Thumbs.db

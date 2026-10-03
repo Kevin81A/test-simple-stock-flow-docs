@@ -1,91 +1,137 @@
-# Simple Stock Flow · Master Specification & Documentation (SDD)
+﻿# Simple Stock Flow · Unified Monorepo
 
-> **SDD Technical Assessment · SENA ADSO Class 3413974**  
-> Central repository for master documentation, original specifications, and technical deliverables for the *Simple Stock Flow* project.
+> **Spec-Driven Development (SDD) Technical Benchmark**  
+> **National Learning Service (SENA) · Software Analysis and Development (ADSO) · Class 3413974**  
+> **Developer:** Kevin ([`Kevin81A`](https://github.com/Kevin81A))  
+> **Production Stack:** PHP 8.2 (Laravel 11) + React 18 (TypeScript + Vite) + MySQL 8.4 LTS + Docker Compose  
 
 ---
 
-## 📌 Master Technical Delivery Report
-For the complete architectural report, Mermaid diagrams (Onion layers, ER diagram, sequence flows), business rules traceability matrix, and evaluation guide, see the master document:  
-👉 **[TECHNICAL-DELIVERY.md](TECHNICAL-DELIVERY.md)** (also available in Spanish as **[ENTREGA-TECNICA.md](ENTREGA-TECNICA.md)**)
+## 📌 Master Technical Documentation
+For the complete technical report featuring Mermaid diagrams (Onion Architecture, ER Model, Sequence Flow) and requirement traceability, see:  
+👉 **[TECHNICAL-DELIVERY.md](TECHNICAL-DELIVERY.md)**
 
 ---
 
 ## 1. What is this repository and what role does it play in Simple Stock Flow?
 
-This repository is the **canonical source of truth** and documentation hub for the entire *Simple Stock Flow* ecosystem.
-Its responsibilities include:
-- Preserving the original dual specifications: `spec-python/` and `spec-.net/`.
-- Defining the **13 Non-Negotiable Constitutional Articles** for Spec-Driven Development (SDD).
-- Documenting all **Architectural Decision Records (ADRs)** and OpenAPI / RFC 7807 contracts governing the solution.
-- Providing a methodological reference demonstrating how an abstract specification is implemented as a clean production architecture in **PHP 8.2 (Laravel 11)** and **React 18**.
+This repository is the **Unified Monorepo** consolidating all 6 components of *Simple Stock Flow* into a single, cohesive, and directly executable codebase:
+
+```text
+test-simple-stock-flow/
+├── docker-compose.yml          # Root orchestration (1 command to start all services)
+├── docker-compose.dev.yml      # Local development port mapping
+├── .env.example                # Pre-configured environment variables
+├── verify.sh / verify.ps1      # Automated test suites for probes P-01 through P-42
+├── TECHNICAL-DELIVERY.md       # Master technical architecture & compliance report
+│
+├── api/                        # REST Backend (Laravel 11 / PHP 8.2) - Pure Onion Architecture
+├── app/                        # Frontend SPA (React 18 + TypeScript + Vite) served via Nginx
+├── infra/                      # Infrastructure assets and environment definitions
+├── docs/                       # Original SDD specifications (Python / .NET), ADRs & constitution
+├── page/                       # Responsive static public landing page (zero API calls)
+└── tool/                       # Python CLI seeder tool for idempotent demo data population
+```
 
 ---
 
-## 2. How to run and navigate the solution?
+## 2. How to run the project locally? (Quickstart)
 
-All six repositories are cloned as **sibling directories** inside a shared workspace folder:
+### With Docker Compose (Recommended - Single Command)
+The root `docker-compose.yml` builds and orchestrates the full ecosystem out of the box:
 
 ```bash
-# Required host structure:
-workspace/
-├── test-simple-stock-flow-api/     # Laravel REST Backend (port 8000)
-├── test-simple-stock-flow-app/     # React 18 SPA on Nginx (port 8080)
-├── test-simple-stock-flow-docs/    # Documentation & Specifications
-├── test-simple-stock-flow-infra/   # Docker Compose & MySQL 8.4 Database
-├── test-simple-stock-flow-page/    # Static Public Presentation Site
-└── test-simple-stock-flow-tool/    # Python Idempotent Seeder CLI
-```
+# 1. Clone the monorepo
+git clone https://github.com/Kevin81A/test-simple-stock-flow.git
+cd test-simple-stock-flow
 
-### Running the Services
-From the `test-simple-stock-flow-infra` folder:
-```bash
+# 2. Start services in the background
 docker compose up -d --build
+
+# 3. Check container health status
+docker compose ps
 ```
-- **Web Application (SPA):** `http://localhost:8080`
-- **REST API:** `http://localhost:8000`
-- **Healthcheck:** `http://localhost:8000/health`
+
+#### Application Endpoints
+- **Web Application (React SPA):** [http://localhost:8080](http://localhost:8080)
+- **REST API (Laravel 11):** [http://localhost:8000](http://localhost:8000)
+- **Healthcheck Probe:** [http://localhost:8000/health](http://localhost:8000/health)
+- **Static Landing Page:** Open `page/index.html` in your browser.
+
+#### Initial Credentials
+- **Administrator Role:** Username `admin@stockflow.com` (or `admin`) / Password `Admin12345!`
+- **Seller Role:** Registered via `/vendedores/nuevo` by an authenticated administrator (enforcing DP-04).
 
 ---
 
 ## 3. Required Environment Variables
 
-This documentation repository executes no runtime processes and requires no environment variables.
-All environment configuration for the complete infrastructure is centralized in `test-simple-stock-flow-infra/.env.example` and fully documented in [`TECHNICAL-DELIVERY.md`](TECHNICAL-DELIVERY.md).
+The `.env.example` file in the root provides default configurations:
 
----
-
-## 4. How are tests and system verification executed?
-
-The infrastructure repository (`test-simple-stock-flow-infra`) contains comprehensive automated verification scripts covering probes P-01 through P-42:
-- On Linux / macOS / Git Bash: `./verify.sh`
-- On Windows PowerShell: `.\verify.ps1`
-
-In the backend (`test-simple-stock-flow-api`):
-- `php artisan test`
-
----
-
-## 5. Relevant Technical Decisions Taken During Implementation
-
-1. **Rigorous Spec Translation to Laravel + React:**
-   - The original specification utilized Python/.NET as agnostic reference examples. A 1:1 translation was performed for all entities, rules, and contracts into **pure PHP 8.2 in Domain**, **Laravel 11 in Infrastructure/Presentation**, and **React 18 + Vite in Frontend**.
-2. **4-Layer Onion Architecture (Article I):**
-   - The domain core has zero references to Laravel or Eloquent. Database models (`ProductModel`, `SaleModel`, etc.) are strictly confined to `app/Infrastructure/Persistence/Models` and interact with the domain exclusively through bidirectional mappers.
-3. **Persistence and Optimistic Concurrency Locking (RN-11 / 409):**
-   - To prevent race conditions in concurrent sales, version-based optimistic locking with up to 3 automatic retries was implemented in `RegisterSaleUseCase`.
-4. **Strict Conforming Error Responses (Invariant D-C9):**
-   - HTTP 401, 403, 404, and 405 return strictly empty bodies (`Content-Length: 0`). HTTP 400 and 422 return RFC 7807 compliant payloads (`application/problem+json`).
-
----
-
-## 6. The Six Ecosystem Repositories on GitHub
-
-| Repository | Description | GitHub Link |
+| Variable | Description | Default Value |
 |---|---|---|
-| `test-simple-stock-flow-docs` | Original specification, constitution, and technical delivery | [Kevin81A/test-simple-stock-flow-docs](https://github.com/Kevin81A/test-simple-stock-flow-docs) |
-| `test-simple-stock-flow-api` | REST Backend in PHP 8.2 + Laravel 11 (Onion Architecture) | [Kevin81A/test-simple-stock-flow-api](https://github.com/Kevin81A/test-simple-stock-flow-api) |
-| `test-simple-stock-flow-app` | Frontend SPA in React 18 + Vite + TypeScript (Nginx) | [Kevin81A/test-simple-stock-flow-app](https://github.com/Kevin81A/test-simple-stock-flow-app) |
-| `test-simple-stock-flow-infra` | Docker Compose orchestration, MySQL 8.4, and verification | [Kevin81A/test-simple-stock-flow-infra](https://github.com/Kevin81A/test-simple-stock-flow-infra) |
-| `test-simple-stock-flow-page` | Static presentation site (zero API calls) | [Kevin81A/test-simple-stock-flow-page](https://github.com/Kevin81A/test-simple-stock-flow-page) |
-| `test-simple-stock-flow-tool` | Python idempotent CLI demo seeder | [Kevin81A/test-simple-stock-flow-tool](https://github.com/Kevin81A/test-simple-stock-flow-tool) |
+| `DB_ROOT_PASSWORD` | MySQL root database password | `rootsecret` |
+| `DB_DATABASE` | Database name | `stockflow` |
+| `DB_USERNAME` | Application database user | `stockflow` |
+| `DB_PASSWORD` | Application database password | `stockflowpass` |
+| `JWT_SIGNING_KEY` | Symmetric HS256 secret key | `super_secret_jwt_key_stock_flow_2026_adso_3413974` |
+| `ADMIN_EMAIL` | Initial administrator email | `admin@stockflow.com` |
+| `ADMIN_PASSWORD` | Initial administrator password | `Admin12345!` |
+
+*Security Notice (Article IX): In production environments, secrets must not use default values.*
+
+---
+
+## 4. How are tests and automated verification executed?
+
+The repository includes cross-platform automated test suites testing probes P-01 through P-42:
+
+### On Linux / macOS / Git Bash:
+```bash
+./verify.sh
+```
+
+### On Windows (PowerShell):
+```powershell
+.\verify.ps1
+```
+
+### Backend Automated Unit Tests (PHPUnit):
+```bash
+docker compose exec api php artisan test
+```
+
+### Seeding Demo Data (Optional):
+```bash
+cd tool
+docker build -t ssf-tool .
+docker run --rm --network host ssf-tool seed
+```
+
+---
+
+## 5. Key Technical Decisions Made During Implementation
+
+1. **Unified Monorepo for Evaluation Ergonomics:**
+   - Allows evaluators to clone one repository and launch the whole solution with `docker compose up -d --build`, eliminating sibling folder path friction.
+2. **Strict Onion Architecture in Backend (Article I):**
+   - Pure PHP 8.2 domain layer, completely decoupled from Eloquent and Laravel.
+3. **Optimistic Locking with Versioning (BR-11 / HTTP 409):**
+   - Concurrency resolution using version checks and up to 3 automatic retries during sale registration.
+4. **RFC 7807 & Invariant D-C9 Error Compliance:**
+   - 401, 403, 404, and 405 responses emit an empty body (`Content-Length: 0`). 400 and 422 return `application/problem+json`.
+5. **Decoupled Static Presentation Site (`page/`):**
+   - Independent HTML5 landing page with zero network coupling to the API.
+
+---
+
+## 6. Sibling Repositories & Forks
+
+This monorepo unifies the modular repositories previously synchronized:
+* Central Monorepo: [https://github.com/Kevin81A/test-simple-stock-flow](https://github.com/Kevin81A/test-simple-stock-flow)
+* Backend API: [https://github.com/Kevin81A/test-simple-stock-flow-api](https://github.com/Kevin81A/test-simple-stock-flow-api)
+* Frontend SPA: [https://github.com/Kevin81A/test-simple-stock-flow-app](https://github.com/Kevin81A/test-simple-stock-flow-app)
+* Infrastructure: [https://github.com/Kevin81A/test-simple-stock-flow-infra](https://github.com/Kevin81A/test-simple-stock-flow-infra)
+* Documentation: [https://github.com/Kevin81A/test-simple-stock-flow-docs](https://github.com/Kevin81A/test-simple-stock-flow-docs)
+* Static Site: [https://github.com/Kevin81A/test-simple-stock-flow-page](https://github.com/Kevin81A/test-simple-stock-flow-page)
+* CLI Tool: [https://github.com/Kevin81A/test-simple-stock-flow-tool](https://github.com/Kevin81A/test-simple-stock-flow-tool)

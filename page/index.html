@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Stock Flow · Inventory and Sales Management</title>
+  <meta name="description" content="Inventory and sales management platform built under Spec-Driven Development (SDD) methodology for SENA ADSO Class 3413974.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7.5 4.27 9 5.15'/><path d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z'/><path d='m3.3 7 8.7 5 8.7-5'/><path d='M12 22V12'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- Header & Navigation -->
+  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Brand Logo -->
+        <a href="#home" class="flex items-center space-x-3 group">
+          <div class="bg-gradient-to-tr from-brand-700 to-brand-500 p-2.5 rounded-xl shadow-lg shadow-brand-500/25 group-hover:scale-105 transition transform">
+            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m7.5 4.27 9 5.15"/>
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+              <path d="m3.3 7 8.7 5 8.7-5"/>
+              <path d="M12 22V12"/>
+            </svg>
+          </div>
+          <div>
+            <span class="text-xl font-bold tracking-tight text-white block leading-tight">
+              Simple Stock Flow
+            </span>
+            <span class="text-xs text-brand-400 font-medium block">
+              SDD Technical Challenge · SENA
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+          <a href="#features" class="hover:text-white transition">Features</a>
+          <a href="#architecture" class="hover:text-white transition">Architecture</a>
+          <a href="#specification" class="hover:text-white transition">SDD Specification</a>
+          <a href="#ecosystem" class="hover:text-white transition">Ecosystem</a>
+        </nav>
+
+        <!-- CTA Button -->
+        <div class="flex items-center space-x-4">
+          <a href="http://localhost:8080" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-xl shadow-lg shadow-brand-600/30 transition transform hover:-translate-y-0.5 active:translate-y-0">
+            <span>Open System (App)</span>
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative pt-24 pb-20 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(37,99,235,0.25),rgba(255,255,255,0))]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-semibold mb-6">
+        <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+        SENA · ADSO Class 3413974 · Cohort 2026
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-none">
+        Inventory & Sales Management with <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300">Clean Architecture</span>
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+        Enterprise implementation based on <strong class="text-white">Spec-Driven Development (SDD)</strong> featuring a framework-agnostic pure PHP Domain, Laravel 11 REST API, and React SPA.
+      </p>
+
+      <!-- Badges Stack -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-slate-400">
+        <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700/60 rounded-lg">PHP 8.2 + Laravel 11</span>
+        <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700/60 rounded-lg">React 18 + Vite + TypeScript</span>
+        <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700/60 rounded-lg">MySQL 8.4 LTS</span>
+        <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700/60 rounded-lg">Docker Compose</span>
+        <span class="px-3 py-1.5 bg-slate-800/80 border border-slate-700/60 rounded-lg">Nginx Reverse Proxy</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#features" class="w-full sm:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl shadow-xl shadow-brand-600/30 transition text-sm">
+          Explore Features
+        </a>
+        <a href="#architecture" class="w-full sm:w-auto px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold rounded-xl transition text-sm">
+          View Architectural Design
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="py-24 bg-slate-950/60 border-t border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-brand-400 uppercase tracking-widest">Business Capabilities</h2>
+        <p class="mt-2 text-3xl font-extrabold text-white">Engineered for Transactional Reliability</p>
+        <p class="mt-4 text-slate-400 text-sm">
+          Every operation strictly adheres to immutable models, inventory consistency, and historical price preservation.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-2xl hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-brand-400 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Product Catalog</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Full lifecycle management with unique names, fixed categories, COP unit pricing (Value Object <code class="text-brand-300">Money</code>), stock tracking, and image uploads up to 5 MB.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-2xl hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Atomic Point of Sale</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Atomic transactions safeguarded by optimistic locking (<code class="text-brand-300">version</code> column with up to 3 automatic retries). Automatic stock deduction.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-2xl hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 text-purple-400 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Consolidated Reports</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            High-efficiency aggregated reporting in database across date ranges, preserving historical product names at time of sale (DP-01).
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-2xl hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Security & RBAC</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Stateless JWT authentication with symmetric HS256 tokens and 30s clock leeway. Strict role hierarchy (Admin vs. Seller) enforcing DP-04.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-2xl hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Logical Deletion (Soft Delete)</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Products are never physically erased if linked to commercial records. Soft Delete preserves referential integrity in MySQL.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="p-8 bg-slate-900 border border-slate-800 rounded-2xl hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Media & File Storage</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Image persistence via shared named volume <code class="text-brand-300">media_data</code> with MIME validation, SHA-256 unique file naming, and Nginx proxy delivery.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Section -->
+  <section id="architecture" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-brand-400 uppercase tracking-widest">Engineering Excellence</h2>
+        <p class="mt-2 text-3xl font-extrabold text-white">Strict Onion / Hexagonal Architecture</p>
+        <p class="mt-4 text-slate-400 text-sm">
+          Total framework independence in the Domain core. Zero Laravel or Eloquent coupling inside core business logic.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Layer 1 -->
+        <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 relative overflow-hidden">
+          <div class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">Layer 1 · Core</div>
+          <h4 class="text-xl font-bold text-white mb-3">Domain</h4>
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Pure PHP 8.2. Entities and immutable Value Objects. Autonomous business rules and semantic exceptions.
+          </p>
+          <ul class="text-xs text-slate-400 space-y-1.5 border-t border-slate-700/60 pt-3 font-mono">
+            <li>• Entities: Product, Sale, User</li>
+            <li>• ValueObjects: Money, Quantity</li>
+            <li>• Repositories: Pure Interfaces</li>
+          </ul>
+        </div>
+
+        <!-- Layer 2 -->
+        <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 relative overflow-hidden">
+          <div class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">Layer 2 · Orchestration</div>
+          <h4 class="text-xl font-bold text-white mb-3">Application</h4>
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Every business action encapsulated in a single-responsibility Use Case class. Decoupled input/output DTOs.
+          </p>
+          <ul class="text-xs text-slate-400 space-y-1.5 border-t border-slate-700/60 pt-3 font-mono">
+            <li>• RegisterSaleUseCase</li>
+            <li>• CreateProductUseCase</li>
+            <li>• GetSalesReportUseCase</li>
+          </ul>
+        </div>
+
+        <!-- Layer 3 -->
+        <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 relative overflow-hidden">
+          <div class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2">Layer 3 · Adapters</div>
+          <h4 class="text-xl font-bold text-white mb-3">Infrastructure</h4>
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Interface implementations backed by Eloquent, MySQL database, bidirectional mappers, and Argon2/JWT services.
+          </p>
+          <ul class="text-xs text-slate-400 space-y-1.5 border-t border-slate-700/60 pt-3 font-mono">
+            <li>• EloquentProductRepository</li>
+            <li>• EloquentSaleRepository</li>
+            <li>• Argon2PasswordHasher</li>
+          </ul>
+        </div>
+
+        <!-- Layer 4 -->
+        <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 relative overflow-hidden">
+          <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">Layer 4 · Delivery</div>
+          <h4 class="text-xl font-bold text-white mb-3">Presentation</h4>
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Laravel REST Controllers and React Single Page Application. Normalized RFC 7807 problem+json error responses.
+          </p>
+          <ul class="text-xs text-slate-400 space-y-1.5 border-t border-slate-700/60 pt-3 font-mono">
+            <li>• ProductController, SaleController</li>
+            <li>• JwtAuthMiddleware</li>
+            <li>• React SPA (Vite + Nginx)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SDD Spec Info -->
+  <section id="specification" class="py-24 bg-slate-950/60 border-t border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl">
+        <div class="flex items-center gap-3 text-brand-400 text-xs font-bold uppercase tracking-wider mb-4">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+          <span>Spec-Driven Development Methodology</span>
+        </div>
+
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-4">
+          Zero Assumptions. Total Spec Fidelity.
+        </h3>
+
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+          In SDD challenges, source code is the vehicle, not the ultimate goal. This implementation faithfully translated the abstract specification (conceptualized in Python and .NET) into the production stack: <strong>PHP 8.2 (Laravel 11)</strong> and <strong>React 18</strong> without violating any of the 13 non-negotiable constitution articles or OpenAPI contracts.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium text-slate-300">
+          <div class="p-4 bg-slate-800/50 rounded-xl border border-slate-700/60">
+            <span class="text-white font-bold block mb-1">Currency Invariant (H-2)</span>
+            Monetary figures represented with fixed decimal precision in COP with HALF_UP rounding.
+          </div>
+          <div class="p-4 bg-slate-800/50 rounded-xl border border-slate-700/60">
+            <span class="text-white font-bold block mb-1">Date Invariant (H-3)</span>
+            Ranges with exclusive upper bound (<code class="text-brand-300">from &lt;= sold_at &lt; to</code>) avoiding second loss.
+          </div>
+          <div class="p-4 bg-slate-800/50 rounded-xl border border-slate-700/60">
+            <span class="text-white font-bold block mb-1">Frozen Historical Names (DP-01)</span>
+            Reports and line items retain the product name at the time of sale even if renamed later.
+          </div>
+          <div class="p-4 bg-slate-800/50 rounded-xl border border-slate-700/60">
+            <span class="text-white font-bold block mb-1">No Default Secrets (Art. IX)</span>
+            Admin passwords and JWT keys are strictly supplied through environment variables in production.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repositories Ecosystem -->
+  <section id="ecosystem" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-brand-400 uppercase tracking-widest">Modular Structure</h2>
+        <p class="mt-2 text-3xl font-extrabold text-white">Consolidated Monorepo & Ecosystem</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <span class="text-xs font-mono text-brand-400 block mb-1">docs/</span>
+          <h4 class="font-bold text-white mb-2">Original Specification</h4>
+          <p class="text-xs text-slate-400">OpenAPI contracts, business rules, user stories, and SDD constitution.</p>
+        </div>
+
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <span class="text-xs font-mono text-brand-400 block mb-1">api/</span>
+          <h4 class="font-bold text-white mb-2">REST Backend (Laravel 11)</h4>
+          <p class="text-xs text-slate-400">Hexagonal architecture API with pure PHP 8.2 in domain and MySQL 8.4 persistence.</p>
+        </div>
+
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <span class="text-xs font-mono text-brand-400 block mb-1">app/</span>
+          <h4 class="font-bold text-white mb-2">Frontend SPA (React 18)</h4>
+          <p class="text-xs text-slate-400">Single Page Application in React + Vite + TypeScript served via Nginx reverse proxy.</p>
+        </div>
+
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <span class="text-xs font-mono text-brand-400 block mb-1">page/</span>
+          <h4 class="font-bold text-white mb-2">Informative Static Landing</h4>
+          <p class="text-xs text-slate-400">Public marketing and informative page with zero network coupling to API.</p>
+        </div>
+
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <span class="text-xs font-mono text-brand-400 block mb-1">infra/</span>
+          <h4 class="font-bold text-white mb-2">Docker Infrastructure</h4>
+          <p class="text-xs text-slate-400">Container orchestration, media volumes, and empty MySQL 8.4 engine (ADR-001).</p>
+        </div>
+
+        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+          <span class="text-xs font-mono text-brand-400 block mb-1">tool/</span>
+          <h4 class="font-bold text-white mb-2">Demo Seeder Tool</h4>
+          <p class="text-xs text-slate-400">Python CLI utility for idempotent demo product, image, and sale seeding over the API.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800 py-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <div class="flex items-center justify-center space-x-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+        <span class="font-semibold text-slate-400">Simple Stock Flow · Operational Status: Normal</span>
+      </div>
+      <p>
+        National Learning Service (SENA) · Software Analysis and Development (ADSO) · Class 3413974
+      </p>
+      <p class="text-slate-600">
+        Strict adherence to SDD Architecture and Contract Compliance.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

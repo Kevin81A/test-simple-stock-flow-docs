@@ -1,0 +1,12 @@
+/vendor
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+/storage/*.key
+/storage/app/media/*
+!/storage/app/media/.gitignore
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
