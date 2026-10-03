@@ -1,91 +1,91 @@
-# Simple Stock Flow · Especificación y Documentación Maestra (SDD)
+# Simple Stock Flow · Master Specification & Documentation (SDD)
 
-> **Prueba Técnica de Desempeño SDD · Ficha ADSO 3413974**  
-> Repositorio central de documentación, especificación original y entrega técnica del proyecto *Simple Stock Flow*.
-
----
-
-## 📌 Documentación de Entrega Técnica del Reto
-Para consultar el informe completo de arquitectura, diagramas Mermaid (Onion, ER, Secuencia), matriz de trazabilidad de reglas de negocio y guía de evaluación, consulte el documento maestro:
-👉 **[ENTREGA-TECNICA.md](ENTREGA-TECNICA.md)**
+> **SDD Technical Assessment · SENA ADSO Class 3413974**  
+> Central repository for master documentation, original specifications, and technical deliverables for the *Simple Stock Flow* project.
 
 ---
 
-## 1. ¿Qué es este repositorio y qué rol cumple en Simple Stock Flow?
-
-Este repositorio es la **fuente de verdad canónica** y el centro de documentación del ecosistema *Simple Stock Flow*.
-Cumple el rol de:
-- Guardar la especificación original en dos versiones conceptuales: `spec-python/` y `spec-.net/`.
-- Establecer la **Constitución de 13 Artículos Innegociables** para el desarrollo con enfoque SDD (*Spec-Driven Development*).
-- Consignar las **Decisiones de Arquitectura (ADRs)** y los contratos OpenAPI / RFC 7807 que rigen la solución.
-- Servir de guía metodológica para demostrar cómo una especificación abstracta se materializa en una arquitectura limpia de producción en **PHP (Laravel 11)** y **React 18**.
+## 📌 Master Technical Delivery Report
+For the complete architectural report, Mermaid diagrams (Onion layers, ER diagram, sequence flows), business rules traceability matrix, and evaluation guide, see the master document:  
+👉 **[TECHNICAL-DELIVERY.md](TECHNICAL-DELIVERY.md)** (also available in Spanish as **[ENTREGA-TECNICA.md](ENTREGA-TECNICA.md)**)
 
 ---
 
-## 2. ¿Cómo se ejecuta y navega la solución?
+## 1. What is this repository and what role does it play in Simple Stock Flow?
 
-Los seis repositorios se clonan como **directorios hermanos** en una carpeta contenedora común:
+This repository is the **canonical source of truth** and documentation hub for the entire *Simple Stock Flow* ecosystem.
+Its responsibilities include:
+- Preserving the original dual specifications: `spec-python/` and `spec-.net/`.
+- Defining the **13 Non-Negotiable Constitutional Articles** for Spec-Driven Development (SDD).
+- Documenting all **Architectural Decision Records (ADRs)** and OpenAPI / RFC 7807 contracts governing the solution.
+- Providing a methodological reference demonstrating how an abstract specification is implemented as a clean production architecture in **PHP 8.2 (Laravel 11)** and **React 18**.
+
+---
+
+## 2. How to run and navigate the solution?
+
+All six repositories are cloned as **sibling directories** inside a shared workspace folder:
 
 ```bash
-# Estructura requerida en el host:
+# Required host structure:
 workspace/
-├── test-simple-stock-flow-api/     # Backend en Laravel (puerto 8000)
-├── test-simple-stock-flow-app/     # Frontend React SPA en Nginx (puerto 8080)
-├── test-simple-stock-flow-docs/    # Documentación y especificación
-├── test-simple-stock-flow-infra/   # Docker Compose y base de datos MySQL 8.4
-├── test-simple-stock-flow-page/    # Sitio público estático de presentación
-└── test-simple-stock-flow-tool/    # Herramienta CLI de sembrado en Python
+├── test-simple-stock-flow-api/     # Laravel REST Backend (port 8000)
+├── test-simple-stock-flow-app/     # React 18 SPA on Nginx (port 8080)
+├── test-simple-stock-flow-docs/    # Documentation & Specifications
+├── test-simple-stock-flow-infra/   # Docker Compose & MySQL 8.4 Database
+├── test-simple-stock-flow-page/    # Static Public Presentation Site
+└── test-simple-stock-flow-tool/    # Python Idempotent Seeder CLI
 ```
 
-### Ejecución de los servicios
-Desde la carpeta `test-simple-stock-flow-infra`:
+### Running the Services
+From the `test-simple-stock-flow-infra` folder:
 ```bash
 docker compose up -d --build
 ```
-- **Aplicación Web (SPA):** `http://localhost:8080`
-- **API REST:** `http://localhost:8000`
-- **Sonda de Salud:** `http://localhost:8000/health`
+- **Web Application (SPA):** `http://localhost:8080`
+- **REST API:** `http://localhost:8000`
+- **Healthcheck:** `http://localhost:8000/health`
 
 ---
 
-## 3. Variables de entorno requeridas
+## 3. Required Environment Variables
 
-Este repositorio de documentación no ejecuta procesos ni requiere variables de entorno en tiempo de ejecución.
-Las variables de entorno de la infraestructura completa están centralizadas en `test-simple-stock-flow-infra/.env.example` y documentadas en detalle en [`ENTREGA-TECNICA.md`](ENTREGA-TECNICA.md).
+This documentation repository executes no runtime processes and requires no environment variables.
+All environment configuration for the complete infrastructure is centralized in `test-simple-stock-flow-infra/.env.example` and fully documented in [`TECHNICAL-DELIVERY.md`](TECHNICAL-DELIVERY.md).
 
 ---
 
-## 4. ¿Cómo se ejecutan las pruebas y validación del sistema?
+## 4. How are tests and system verification executed?
 
-En el repositorio de infraestructura (`test-simple-stock-flow-infra`) se encuentran los scripts de pruebas integrales para comprobar las sondas (P-01 a P-42):
-- En Linux / macOS / Git Bash: `./verify.sh`
-- En Windows PowerShell: `.\verify.ps1`
+The infrastructure repository (`test-simple-stock-flow-infra`) contains comprehensive automated verification scripts covering probes P-01 through P-42:
+- On Linux / macOS / Git Bash: `./verify.sh`
+- On Windows PowerShell: `.\verify.ps1`
 
-En el backend (`test-simple-stock-flow-api`):
+In the backend (`test-simple-stock-flow-api`):
 - `php artisan test`
 
 ---
 
-## 5. Decisiones técnicas relevantes tomadas durante la implementación
+## 5. Relevant Technical Decisions Taken During Implementation
 
-1. **Traducción Rigurosa del Spec a Laravel + React:**
-   - La especificación original utilizaba Python/.NET como ejemplos de especificación agnóstica. Se realizó una traducción 1 a 1 de todas las entidades, reglas y contratos hacia **PHP 8.2 puro en Dominio**, **Laravel 11 en Infraestructura/Presentación** y **React 18 + Vite en el Frontend**.
-2. **Arquitectura Onion de 4 Capas (Artículo I):**
-   - El núcleo de dominio no tiene ninguna referencia a Laravel ni a Eloquent. Los modelos de base de datos (`ProductModel`, `SaleModel`, etc.) se encuentran estrictamente confinados en `app/Infrastructure/Persistence/Models` y se comunican con el dominio a través de Mappers bidireccionales.
-3. **Persistencia y Bloqueo Optimista (RN-11 / 409):**
-   - Para evitar condiciones de carrera en ventas simultáneas, se implementó control de versiones con hasta 3 reintentos automáticos en el caso de uso `RegisterSaleUseCase`.
-4. **Respuestas de Error Conformantes (Invariante D-C9):**
-   - Respuestas 401, 403, 404 y 405 retornan cuerpo estrictamente vacío (`Content-Length: 0`). Respuestas 400 y 422 retornan objetos normalizados bajo RFC 7807 (`application/problem+json`).
+1. **Rigorous Spec Translation to Laravel + React:**
+   - The original specification utilized Python/.NET as agnostic reference examples. A 1:1 translation was performed for all entities, rules, and contracts into **pure PHP 8.2 in Domain**, **Laravel 11 in Infrastructure/Presentation**, and **React 18 + Vite in Frontend**.
+2. **4-Layer Onion Architecture (Article I):**
+   - The domain core has zero references to Laravel or Eloquent. Database models (`ProductModel`, `SaleModel`, etc.) are strictly confined to `app/Infrastructure/Persistence/Models` and interact with the domain exclusively through bidirectional mappers.
+3. **Persistence and Optimistic Concurrency Locking (RN-11 / 409):**
+   - To prevent race conditions in concurrent sales, version-based optimistic locking with up to 3 automatic retries was implemented in `RegisterSaleUseCase`.
+4. **Strict Conforming Error Responses (Invariant D-C9):**
+   - HTTP 401, 403, 404, and 405 return strictly empty bodies (`Content-Length: 0`). HTTP 400 and 422 return RFC 7807 compliant payloads (`application/problem+json`).
 
 ---
 
-## 6. Los Seis Repositorios del Ecosistema en GitHub
+## 6. The Six Ecosystem Repositories on GitHub
 
-| Repositorio | Descripción | Enlace en GitHub |
+| Repository | Description | GitHub Link |
 |---|---|---|
-| `test-simple-stock-flow-docs` | Especificación original, constitución y entrega técnica | [Kevin81A/test-simple-stock-flow-docs](https://github.com/Kevin81A/test-simple-stock-flow-docs) |
-| `test-simple-stock-flow-api` | Backend REST en PHP 8.2 + Laravel 11 (Arquitectura Onion) | [Kevin81A/test-simple-stock-flow-api](https://github.com/Kevin81A/test-simple-stock-flow-api) |
-| `test-simple-stock-flow-app` | Frontend SPA en React 18 + Vite + TypeScript (Nginx) | [Kevin81A/test-simple-stock-flow-app](https://github.com/Kevin81A/test-simple-stock-flow-app) |
-| `test-simple-stock-flow-infra` | Orquestación Docker Compose, MySQL 8.4 y verificación | [Kevin81A/test-simple-stock-flow-infra](https://github.com/Kevin81A/test-simple-stock-flow-infra) |
-| `test-simple-stock-flow-page` | Sitio público estático de presentación (cero API) | [Kevin81A/test-simple-stock-flow-page](https://github.com/Kevin81A/test-simple-stock-flow-page) |
-| `test-simple-stock-flow-tool` | Herramienta CLI de sembrado idempotente en Python | [Kevin81A/test-simple-stock-flow-tool](https://github.com/Kevin81A/test-simple-stock-flow-tool) |
+| `test-simple-stock-flow-docs` | Original specification, constitution, and technical delivery | [Kevin81A/test-simple-stock-flow-docs](https://github.com/Kevin81A/test-simple-stock-flow-docs) |
+| `test-simple-stock-flow-api` | REST Backend in PHP 8.2 + Laravel 11 (Onion Architecture) | [Kevin81A/test-simple-stock-flow-api](https://github.com/Kevin81A/test-simple-stock-flow-api) |
+| `test-simple-stock-flow-app` | Frontend SPA in React 18 + Vite + TypeScript (Nginx) | [Kevin81A/test-simple-stock-flow-app](https://github.com/Kevin81A/test-simple-stock-flow-app) |
+| `test-simple-stock-flow-infra` | Docker Compose orchestration, MySQL 8.4, and verification | [Kevin81A/test-simple-stock-flow-infra](https://github.com/Kevin81A/test-simple-stock-flow-infra) |
+| `test-simple-stock-flow-page` | Static presentation site (zero API calls) | [Kevin81A/test-simple-stock-flow-page](https://github.com/Kevin81A/test-simple-stock-flow-page) |
+| `test-simple-stock-flow-tool` | Python idempotent CLI demo seeder | [Kevin81A/test-simple-stock-flow-tool](https://github.com/Kevin81A/test-simple-stock-flow-tool) |
