@@ -1,66 +1,91 @@
-# test-simple-stock-flow-docs
+# Simple Stock Flow · Especificación y Documentación Maestra (SDD)
 
-> **Prueba técnica · Ficha ADSO 3413974**
-> Horario: de **9:00 a. m. a 3:00 p. m.** (15:00)
+> **Prueba Técnica de Desempeño SDD · Ficha ADSO 3413974**  
+> Repositorio central de documentación, especificación original y entrega técnica del proyecto *Simple Stock Flow*.
 
-Este repositorio contiene el **spec** de *Simple Stock Flow*. Es el único con contenido: los otros cinco empiezan vacíos.
+---
 
-## Instrucciones
+## 📌 Documentación de Entrega Técnica del Reto
+Para consultar el informe completo de arquitectura, diagramas Mermaid (Onion, ER, Secuencia), matriz de trazabilidad de reglas de negocio y guía de evaluación, consulte el documento maestro:
+👉 **[ENTREGA-TECNICA.md](ENTREGA-TECNICA.md)**
 
-Cada aprendiz debe **crear el fork** de los seis repositorios del proyecto y **resolver el proyecto
-con el spec planteado**.
+---
 
-1. Hacer fork, a su cuenta de GitHub, de cada repositorio de la tabla del final.
-2. Leer el spec en [`test-simple-stock-flow-docs`](https://github.com/code-sena/test-simple-stock-flow-docs).
-   Se entrega en dos versiones: `spec-python/` y `spec-.net/`.
-3. Desarrollar en los forks.
+## 1. ¿Qué es este repositorio y qué rol cumple en Simple Stock Flow?
 
-## El reto se desarrolla con React y PHP (Laravel)
+Este repositorio es la **fuente de verdad canónica** y el centro de documentación del ecosistema *Simple Stock Flow*.
+Cumple el rol de:
+- Guardar la especificación original en dos versiones conceptuales: `spec-python/` y `spec-.net/`.
+- Establecer la **Constitución de 13 Artículos Innegociables** para el desarrollo con enfoque SDD (*Spec-Driven Development*).
+- Consignar las **Decisiones de Arquitectura (ADRs)** y los contratos OpenAPI / RFC 7807 que rigen la solución.
+- Servir de guía metodológica para demostrar cómo una especificación abstracta se materializa en una arquitectura limpia de producción en **PHP (Laravel 11)** y **React 18**.
 
-El spec está escrito para Python y para .NET, pero el reto **no** se hace en esos lenguajes:
+---
 
-| Capa | Tecnología del reto |
-|---|---|
-| Frontend | React |
-| Backend | PHP con Laravel |
+## 2. ¿Cómo se ejecuta y navega la solución?
 
-Lo que el spec define sobre el negocio —historias, criterios de aceptación, reglas, contrato de la
-API, modelo de datos— se respeta. Lo que define sobre la tecnología se traduce a React y Laravel.
+Los seis repositorios se clonan como **directorios hermanos** en una carpeta contenedora común:
 
-## La prueba no consiste en escribir el código
+```bash
+# Estructura requerida en el host:
+workspace/
+├── test-simple-stock-flow-api/     # Backend en Laravel (puerto 8000)
+├── test-simple-stock-flow-app/     # Frontend React SPA en Nginx (puerto 8080)
+├── test-simple-stock-flow-docs/    # Documentación y especificación
+├── test-simple-stock-flow-infra/   # Docker Compose y base de datos MySQL 8.4
+├── test-simple-stock-flow-page/    # Sitio público estático de presentación
+└── test-simple-stock-flow-tool/    # Herramienta CLI de sembrado en Python
+```
 
-El propósito principal es ver la **capacidad de desempeño con SDD** (*Spec-Driven Development*,
-desarrollo guiado por especificación): cómo se lee, se interpreta y se aplica una especificación
-para llevarla a un stack distinto. El código es el medio, no el fin.
+### Ejecución de los servicios
+Desde la carpeta `test-simple-stock-flow-infra`:
+```bash
+docker compose up -d --build
+```
+- **Aplicación Web (SPA):** `http://localhost:8080`
+- **API REST:** `http://localhost:8000`
+- **Sonda de Salud:** `http://localhost:8000/health`
 
-## Qué contiene este repositorio
+---
 
-| Carpeta | Contenido |
-|---|---|
-| [`spec-python/`](spec-python/) | El spec de Simple Stock Flow escrito para un backend Python |
-| [`spec-.net/`](spec-.net/) | El mismo sistema especificado para un backend .NET |
+## 3. Variables de entorno requeridas
 
-Las dos versiones describen el **mismo producto** (las mismas historias, reglas de negocio y
-endpoints); cambian las decisiones de tecnología. Ninguna de las dos es el stack del reto.
+Este repositorio de documentación no ejecuta procesos ni requiere variables de entorno en tiempo de ejecución.
+Las variables de entorno de la infraestructura completa están centralizadas en `test-simple-stock-flow-infra/.env.example` y documentadas en detalle en [`ENTREGA-TECNICA.md`](ENTREGA-TECNICA.md).
 
-## Cómo se lee el spec
+---
 
-En cualquiera de las dos carpetas, en este orden:
+## 4. ¿Cómo se ejecutan las pruebas y validación del sistema?
 
-1. `constitution.md` — principios innegociables.
-2. `spec.md` — qué debe hacer el sistema: actores, historias, criterios de aceptación, reglas de negocio.
-3. `plan.md`, `architecture.md` y `arquitectura-panoramica.md` — cómo se construye.
-4. `data-model.md` y `api-contract.md` — el modelo de datos y el contrato de la API.
-5. `tasks.md` — qué hay que hacer y con qué evidencia se da por hecho.
-6. `adr/` — las decisiones de arquitectura, con sus alternativas y consecuencias.
+En el repositorio de infraestructura (`test-simple-stock-flow-infra`) se encuentran los scripts de pruebas integrales para comprobar las sondas (P-01 a P-42):
+- En Linux / macOS / Git Bash: `./verify.sh`
+- En Windows PowerShell: `.\verify.ps1`
 
-## Los seis repositorios
+En el backend (`test-simple-stock-flow-api`):
+- `php artisan test`
 
-| Repositorio | Qué va ahí |
-|---|---|
-| [`test-simple-stock-flow-docs`](https://github.com/code-sena/test-simple-stock-flow-docs) | El spec: `spec-python/` y `spec-.net/` |
-| [`test-simple-stock-flow-api`](https://github.com/code-sena/test-simple-stock-flow-api) | Backend en PHP (Laravel) |
-| [`test-simple-stock-flow-app`](https://github.com/code-sena/test-simple-stock-flow-app) | Frontend en React |
-| [`test-simple-stock-flow-page`](https://github.com/code-sena/test-simple-stock-flow-page) | Sitio público estático de presentación |
-| [`test-simple-stock-flow-infra`](https://github.com/code-sena/test-simple-stock-flow-infra) | Contenedores, red, volúmenes y motor de base de datos vacío |
-| [`test-simple-stock-flow-tool`](https://github.com/code-sena/test-simple-stock-flow-tool) | Utilidades: sembrador de datos de demostración |
+---
+
+## 5. Decisiones técnicas relevantes tomadas durante la implementación
+
+1. **Traducción Rigurosa del Spec a Laravel + React:**
+   - La especificación original utilizaba Python/.NET como ejemplos de especificación agnóstica. Se realizó una traducción 1 a 1 de todas las entidades, reglas y contratos hacia **PHP 8.2 puro en Dominio**, **Laravel 11 en Infraestructura/Presentación** y **React 18 + Vite en el Frontend**.
+2. **Arquitectura Onion de 4 Capas (Artículo I):**
+   - El núcleo de dominio no tiene ninguna referencia a Laravel ni a Eloquent. Los modelos de base de datos (`ProductModel`, `SaleModel`, etc.) se encuentran estrictamente confinados en `app/Infrastructure/Persistence/Models` y se comunican con el dominio a través de Mappers bidireccionales.
+3. **Persistencia y Bloqueo Optimista (RN-11 / 409):**
+   - Para evitar condiciones de carrera en ventas simultáneas, se implementó control de versiones con hasta 3 reintentos automáticos en el caso de uso `RegisterSaleUseCase`.
+4. **Respuestas de Error Conformantes (Invariante D-C9):**
+   - Respuestas 401, 403, 404 y 405 retornan cuerpo estrictamente vacío (`Content-Length: 0`). Respuestas 400 y 422 retornan objetos normalizados bajo RFC 7807 (`application/problem+json`).
+
+---
+
+## 6. Los Seis Repositorios del Ecosistema en GitHub
+
+| Repositorio | Descripción | Enlace en GitHub |
+|---|---|---|
+| `test-simple-stock-flow-docs` | Especificación original, constitución y entrega técnica | [Kevin81A/test-simple-stock-flow-docs](https://github.com/Kevin81A/test-simple-stock-flow-docs) |
+| `test-simple-stock-flow-api` | Backend REST en PHP 8.2 + Laravel 11 (Arquitectura Onion) | [Kevin81A/test-simple-stock-flow-api](https://github.com/Kevin81A/test-simple-stock-flow-api) |
+| `test-simple-stock-flow-app` | Frontend SPA en React 18 + Vite + TypeScript (Nginx) | [Kevin81A/test-simple-stock-flow-app](https://github.com/Kevin81A/test-simple-stock-flow-app) |
+| `test-simple-stock-flow-infra` | Orquestación Docker Compose, MySQL 8.4 y verificación | [Kevin81A/test-simple-stock-flow-infra](https://github.com/Kevin81A/test-simple-stock-flow-infra) |
+| `test-simple-stock-flow-page` | Sitio público estático de presentación (cero API) | [Kevin81A/test-simple-stock-flow-page](https://github.com/Kevin81A/test-simple-stock-flow-page) |
+| `test-simple-stock-flow-tool` | Herramienta CLI de sembrado idempotente en Python | [Kevin81A/test-simple-stock-flow-tool](https://github.com/Kevin81A/test-simple-stock-flow-tool) |
