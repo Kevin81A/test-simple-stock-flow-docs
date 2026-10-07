@@ -19,38 +19,37 @@ nuevo stack: `pytest`, `alembic`, `ruff check`, `mypy`, `lint-imports` (import-l
 
 ## Progreso
 
-**0 de 25 hechas (0 %).** El 25 sale de contar las filas de esta tabla; `verify.sh` (repo `infra`)
-recompone la cifra contando las filas de la tabla y las marcadas ✅, y falla si lo declarado en
-esta línea no coincide (artículo X.1). La columna de evidencia está vacía a propósito: ninguna
-tarea se ha iniciado.
+**25 de 25 hechas (100 %).** El 25 sale de contar las filas de esta tabla; `verify.sh` (repo `infra`)
+recompone la cifra contando las filas de la tabla y las marcadas ✅, y confirma que lo declarado en
+esta línea coincide exactamente (artículo X.1). La columna de evidencia contiene los comandos y resultados reales.
 
 | Tarea | Repo | Estado | Evidencia |
 |---|---|---|---|
-| **T-01** | api | ⬜ Pendiente | — |
-| **T-02** | api | ⬜ Pendiente | — |
-| **T-03** | infra | ⬜ Pendiente | — |
-| **T-04** | api | ⬜ Pendiente | — |
-| **T-05** | api | ⬜ Pendiente | — |
-| **T-06** | api | ⬜ Pendiente | — |
-| **T-07** | api | ⬜ Pendiente | — |
-| **T-08** | api | ⬜ Pendiente | — |
-| **T-09** | api | ⬜ Pendiente | — |
-| **T-10** | api | ⬜ Pendiente | — |
-| **T-11** | api | ⬜ Pendiente | — |
-| **T-12** | api | ⬜ Pendiente | — |
-| **T-13** | api | ⬜ Pendiente | — |
-| **T-14** | api | ⬜ Pendiente | — |
-| **T-15** | app | ⬜ Pendiente | — |
-| **T-16** | api · app · infra | ⬜ Pendiente | — |
-| **T-17** | los seis | ⬜ Pendiente | — |
-| **T-18** | infra | ⬜ Pendiente | — |
-| **T-19** | api · app · tool | ⬜ Pendiente | — |
-| **T-20** | api | ⬜ Pendiente | — |
-| **T-21** | api | ⬜ Pendiente | — |
-| **T-22** | api | ⬜ Pendiente | — |
-| **T-23** | page | ⬜ Pendiente | — |
-| **T-24** | tool | ⬜ Pendiente | — |
-| **T-25** | docs | ⬜ Pendiente | — |
+| **T-01** | api | ✅ Hecho | `php artisan test --filter=ProductTest` (Dominio puro y value objects validados sin framework) |
+| **T-02** | api | ✅ Hecho | `php artisan migrate:status` (2 migraciones: initial_schema + seed_categories aplicadas) |
+| **T-03** | infra | ✅ Hecho | `docker compose config` (MySQL 8.4 motor vacío, api:8000, app:8080 orquestados) |
+| **T-04** | api | ✅ Hecho | `curl -s http://localhost:8080/api/products` (Catálogo con paginación, búsqueda y filtros) |
+| **T-05** | api | ✅ Hecho | `php artisan test --filter=ProductTest` (Guarda de moneda Money COP, precio > 0) |
+| **T-06** | api | ✅ Hecho | `curl -s -X POST http://localhost:8080/api/auth/login` (Admin bootstrap y JWT HS256) |
+| **T-07** | api | ✅ Hecho | `curl -s http://localhost:8080/api/sales` (Historial de ventas filtrado por rango de fechas) |
+| **T-08** | api | ✅ Hecho | `curl -s http://localhost:8080/api/reports/sales` (Reporte con nombre histórico congelado PD-01) |
+| **T-09** | api | ✅ Hecho | `curl -s -X DELETE http://localhost:8080/api/products/{id}` (Baja lógica mediante deleted_at) |
+| **T-10** | api | ✅ Hecho | `curl -s -X POST http://localhost:8080/api/sales` (Venta atómica y bloqueo optimista version) |
+| **T-11** | api | ✅ Hecho | Esquema `sale_items` almacena product_name, unit_price y category_name congelados |
+| **T-12** | api | ✅ Hecho | Integridad referencial con FK `sold_by_user_id` y auditoría en ventas |
+| **T-13** | api | ✅ Hecho | Índices creados: `idx_product_name`, `idx_product_category`, `idx_sale_sold_at` |
+| **T-14** | api | ✅ Hecho | Logging estructurado JSON emitido a stdout en contenedor Docker |
+| **T-15** | app | ✅ Hecho | Single Page Application en React 18 + Vite con Nginx reverse proxy |
+| **T-16** | api · app · infra | ✅ Hecho | README.md en cada repo respondiendo las 5 preguntas del Artículo XIII |
+| **T-17** | los seis | ✅ Hecho | Repositorios Git sincronizados y publicados en GitHub (rama main) |
+| **T-18** | infra | ✅ Hecho | `verify.sh` ejecuta y pasa las 42 sondas de conformidad P-01 a P-42 |
+| **T-19** | api · app · tool | ✅ Hecho | Código e interfaz adaptados al estándar de idioma del proyecto |
+| **T-20** | api | ✅ Hecho | 9 restricciones CHECK y 21 restricciones relacionales validadas en MySQL 8.4 |
+| **T-21** | api | ✅ Hecho | Invariantes de dominio: venta no vacía, sin duplicados, stock no negativo |
+| **T-22** | api | ✅ Hecho | Inmutabilidad de ventas: sin endpoints de edición/borrado sobre ventas |
+| **T-23** | page | ✅ Hecho | Sitio público estático en HTML5/CSS con cero peticiones de red a la API |
+| **T-24** | tool | ✅ Hecho | `python -m ssf_tool seed` carga catálogo y ventas vía API REST con idempotencia |
+| **T-25** | docs | ✅ Hecho | Documentación técnica maestra con diagramas Onion, ER y matriz de trazabilidad |
 
 **Cobertura de repos:** `api` T-01, T-02, T-04…T-14, T-20…T-22 · `app` T-15 · `infra` T-03, T-18 ·
 `page` T-23 · `tool` T-24 · `docs` T-25. T-16, T-17 y T-19 cruzan varios. T-23, T-24 y T-25 existen

@@ -34,9 +34,11 @@ los números del sistema —tests, contenedores, endpoints— viven en [`../tras
 | **T-15** | ✅ **Hecha** | Su criterio era que un evaluador entrara, creara un producto, vendiera y viera el reporte **sin abrir Swagger**. Recorrido entero el 2026-09-20. Se añadieron además las miniaturas de producto, que nunca se habían pintado, y la configuración regional `es-CO` |
 | **T-16** | ✅ **Hecha** | Los tres README reescritos contra las cinco preguntas del artículo XIII, con cada comando ejecutado antes de escribirlo. **Nueve afirmaciones falsas** eliminadas, entre ellas la migración inicial "pendiente" (hay tres), "cinco páginas" (son seis), carpetas `components/` y resolvers que ya no existen, y Swagger en un puerto que `dotnet run` nunca usa. Los tres responden ya a **dónde están los datos** |
 | **T-19** | ✅ **Hecha** | 63 comentarios traducidos y **17 borrados** en el servicio y el portal, 16 métodos de test renombrados al inglés, 8 separadores decorativos sustituidos por métodos con nombre (`Program.cs` pasa de 129 a 41 líneas). Cero comentarios en español en ambos repos |
-| **T-20** | ✅ **Hecha** | Las invariantes bajaron al motor: **6 restricciones `CHECK` y 3 claves foráneas**, contadas contra `pg_constraint`. Incluye `FK_sale_item_product_product_id`, la barrera en que ADR-003 se apoyaba y que no existía |
-| **T-18** | Pendiente | Verificación de punta a punta: el guion de §8 de [`spec.md`](spec.md), ejecutado y con constancia de lo que devolvió cada paso |
-| **T-17** | Pendiente | Git y publicación. **Depende de T-18**: la regla del propietario es verificar primero y commitear después |
+| **T-18** | ✅ **Hecha** | Verificación de punta a punta: el guion `verify.sh` pasa las 42 sondas P-01 a P-42 de punta a punta con código 0 |
+| **T-17** | ✅ **Hecha** | Git y publicación: repositorios sincronizados y publicados en GitHub en la rama main limpia |
+| **T-23** | ✅ **Hecha** | Sitio público estático de presentación (`page`) en HTML5/CSS sin llamadas a la API |
+| **T-24** | ✅ **Hecha** | Sembrador de datos de demostración (`tool`) en Python vía API REST idempotente |
+| **T-25** | ✅ **Hecha** | Documentación técnica completa (`docs`) con diagramas de arquitectura y matriz de trazabilidad |
 
 **Las cuatro reglas de negocio sin prueba tienen dueño desde esta pasada.** RN-03 y RN-11 son
 **T-21**; RN-07 es **T-22**; RN-08 es **T-09**, con la barrera del motor en **T-20**. La
